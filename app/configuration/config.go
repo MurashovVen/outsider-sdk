@@ -1,8 +1,12 @@
-package app
+package configuration
 
 import (
 	"github.com/kelseyhightower/envconfig"
 )
+
+type Default struct {
+	Env Environment `desc:"(development)" default:"development" split_words:"true"`
+}
 
 var configPrefix = "APP"
 

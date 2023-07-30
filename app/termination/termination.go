@@ -33,13 +33,13 @@ func NewWaiter(options ...WaiterOption) *Waiter {
 
 func WaiterWithLogger(logger *logger.Logger) WaiterOption {
 	return func(waiter *Waiter) {
-		waiter.logger = logger.Named("TerminationWaiter")
+		waiter.logger = logger.Named(waiter.Name())
 	}
 }
 
 var ErrStopped = errors.New("application is stopped")
 
-func (w *Waiter) WaitFunc(ctx context.Context) func() error {
+func (w *Waiter) Runner(ctx context.Context) func() error {
 	return func() error {
 		signalsChan := make(chan os.Signal, 1)
 		signal.Notify(signalsChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
@@ -54,4 +54,8 @@ func (w *Waiter) WaitFunc(ctx context.Context) func() error {
 			return ctx.Err()
 		}
 	}
+}
+
+func (w *Waiter) Name() string {
+	return "TerminationWaiter"
 }

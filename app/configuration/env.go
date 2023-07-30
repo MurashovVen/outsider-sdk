@@ -1,4 +1,4 @@
-package app
+package configuration
 
 type Environment string
 

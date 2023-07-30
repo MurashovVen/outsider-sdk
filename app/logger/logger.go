@@ -1,20 +1,18 @@
 package logger
 
 import (
-	"context"
 	"errors"
-	"log"
 
 	"go.uber.org/zap"
 
-	"github.com/MurashovVen/outsider-sdk/app"
+	"github.com/MurashovVen/outsider-sdk/app/configuration"
 )
 
 type Logger struct {
 	*zap.Logger
 }
 
-func MustCreateLogger(environment app.Environment) *Logger {
+func MustCreateLogger(environment configuration.Environment) *Logger {
 	l, err := CreateLogger(environment)
 	if err != nil {
 		panic("creating logger: " + err.Error())
@@ -23,9 +21,9 @@ func MustCreateLogger(environment app.Environment) *Logger {
 	return l
 }
 
-func CreateLogger(environment app.Environment) (*Logger, error) {
+func CreateLogger(environment configuration.Environment) (*Logger, error) {
 	switch environment {
-	case app.DevEnv:
+	case configuration.DevEnv:
 		l, err := zap.NewDevelopment()
 		return &Logger{Logger: l}, err
 
@@ -39,21 +37,12 @@ func NewNop() *Logger {
 		Logger: zap.NewNop(),
 	}
 }
-func (l Logger) SyncWaiter(ctx context.Context) func() error {
-	return func() error {
-		select {
-		case <-ctx.Done():
-			// todo fix
-			if err := l.Sync(); err != nil {
-				log.Printf("sync logger error: %v", err)
-			}
-		}
 
-		return nil
-	}
+func (l *Logger) SyncWaiter() *SyncWaiter {
+	return newSyncWaiter(l)
 }
 
-func (l Logger) Named(name string) *Logger {
+func (l *Logger) Named(name string) *Logger {
 	return &Logger{
 		Logger: l.Logger.Named(name),
 	}
