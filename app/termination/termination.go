@@ -42,7 +42,7 @@ var ErrStopped = errors.New("application is stopped")
 func (w *Waiter) Runner(ctx context.Context) func() error {
 	return func() error {
 		signalsChan := make(chan os.Signal, 1)
-		signal.Notify(signalsChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
+		signal.Notify(signalsChan, syscall.SIGINT, syscall.SIGTERM)
 
 		select {
 		case sig := <-signalsChan:

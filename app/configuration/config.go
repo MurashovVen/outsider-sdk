@@ -21,9 +21,5 @@ func ProcessConfig(cfg interface{}) error {
 		return err
 	}
 
-	if err := envconfig.Process(configPrefix, cfg); err != nil {
-		return err
-	}
-
-	return nil
+	return envconfig.Process(configPrefix, cfg)
 }

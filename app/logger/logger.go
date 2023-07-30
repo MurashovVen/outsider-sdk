@@ -28,6 +28,7 @@ func CreateLogger(environment configuration.Environment) (*Logger, error) {
 		return &Logger{Logger: l}, err
 
 	default:
+		//nolint:goerr113
 		return nil, errors.New("unknown environment")
 	}
 }

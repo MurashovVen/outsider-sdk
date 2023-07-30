@@ -23,11 +23,12 @@ func (sw *SyncWaiter) Runner(ctx context.Context) func() error {
 
 func (l *Logger) syncWait(ctx context.Context) func() error {
 	return func() error {
-		select {
-		case <-ctx.Done():
-			if err := l.Sync(); err != nil && !errors.Is(err, syscall.ENOTTY) {
-				log.Printf("sync logger error: %v", err)
-			}
+		<-ctx.Done()
+
+		if err := l.Sync(); err != nil && !errors.Is(err, syscall.ENOTTY) {
+			log.Printf("sync logger error: %v", err)
+
+			return err
 		}
 
 		return nil
