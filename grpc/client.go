@@ -6,6 +6,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/backoff"
+	"google.golang.org/grpc/credentials/insecure"
 
 	"github.com/MurashovVen/outsider-sdk/app/logger"
 )
@@ -39,6 +40,7 @@ func DefaultDialOptions(log *logger.Logger) []grpc.DialOption {
 				MinConnectTimeout: 5 * time.Second,
 			},
 		),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithChainUnaryInterceptor(
 			logging.UnaryClientInterceptor(interceptorLogger(log.Logger)),
 		),
