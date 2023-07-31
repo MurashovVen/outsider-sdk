@@ -10,7 +10,7 @@ type (
 	}
 
 	GRPCServer struct {
-		GRPCServerAddress string `desc:"host+port" default:"localhost:5000" split_words:"true"`
+		GRPCServerAddress string `desc:"host+port" default:"0.0.0.0:5000" split_words:"true"`
 	}
 
 	TelegramClient struct {
