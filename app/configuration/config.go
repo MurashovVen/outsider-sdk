@@ -4,9 +4,19 @@ import (
 	"github.com/kelseyhightower/envconfig"
 )
 
-type Default struct {
-	Env Environment `desc:"(development)" default:"development" split_words:"true"`
-}
+type (
+	Default struct {
+		Env Environment `desc:"(development)" default:"development" split_words:"true"`
+	}
+
+	GRPCServer struct {
+		GRPCServerAddress string `desc:"host+port" default:"localhost:5000" split_words:"true"`
+	}
+
+	TelegramClient struct {
+		TelegramBotToken string `desc:"Auth token" split_words:"true"`
+	}
+)
 
 var configPrefix = "APP"
 
