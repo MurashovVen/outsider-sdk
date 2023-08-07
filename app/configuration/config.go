@@ -20,6 +20,10 @@ type (
 	Mongo struct {
 		MongoURI string `default:"mongodb://mongo:27017" split_words:"true"`
 	}
+
+	RabbitMQ struct {
+		RabbitMQURL string `default:"amqp://user:password@rabbitmq:5672/" split_words:"true"`
+	}
 )
 
 var configPrefix = "APP"
