@@ -1,7 +1,10 @@
 package rabbitmq
 
 import (
+	"context"
+
 	amqp "github.com/rabbitmq/amqp091-go"
+	"go.uber.org/zap"
 
 	"github.com/MurashovVen/outsider-sdk/app/logger"
 )
@@ -54,4 +57,16 @@ func ChannelWithLogger(log *logger.Logger) ChannelOption {
 	return func(channel *Channel) {
 		channel.logger = log.Named("RabbitChannel")
 	}
+}
+
+func (ch *Channel) PublishWithContext(
+	ctx context.Context, exchange string, key string, mandatory bool, immediate bool, msg amqp.Publishing,
+) error {
+	if err := ch.PublishWithContext(ctx, exchange, key, mandatory, immediate, msg); err != nil {
+		return err
+	}
+
+	ch.logger.Info("published message", zap.String("key", key))
+
+	return nil
 }
