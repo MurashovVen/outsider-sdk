@@ -16,6 +16,10 @@ type (
 	TelegramClient struct {
 		TelegramBotToken string `desc:"Auth token" split_words:"true"`
 	}
+
+	Mongo struct {
+		MongoURI string `default:"mongodb://mongo:27017" split_words:"true"`
+	}
 )
 
 var configPrefix = "APP"
