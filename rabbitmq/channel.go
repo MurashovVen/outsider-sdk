@@ -62,7 +62,7 @@ func ChannelWithLogger(log *logger.Logger) ChannelOption {
 func (ch *Channel) PublishWithContext(
 	ctx context.Context, exchange string, key string, mandatory bool, immediate bool, msg amqp.Publishing,
 ) error {
-	if err := ch.PublishWithContext(ctx, exchange, key, mandatory, immediate, msg); err != nil {
+	if err := ch.Channel.PublishWithContext(ctx, exchange, key, mandatory, immediate, msg); err != nil {
 		return err
 	}
 
